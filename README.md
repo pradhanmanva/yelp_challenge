@@ -1,3 +1,3 @@
 **Yelp Dataset Challenge**
 
-This is an experimental project to detect fake reviews about businesses on the Yelp dataset.
+This is an experimental project to predict the rush hours for a specific type of business using the Yelp dataset.
