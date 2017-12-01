@@ -21,7 +21,7 @@ def test_accuracy(biz_id_train, biz_id_test):
     y_train = train[train.columns.values[-1]].values
     # print(X_train)
     # print(y_train)
-    mlp_regressor = MLPRegressor(hidden_layer_sizes=(20, 30, 30, 20), activation='relu', learning_rate='adaptive').fit(
+    mlp_regressor = MLPRegressor(hidden_layer_sizes=(10,5), activation='relu', learning_rate='adaptive').fit(
         X_train,
         y_train)
     test = data.loc[data['business_id'] == biz_id_test]
@@ -34,11 +34,6 @@ def test_accuracy(biz_id_train, biz_id_test):
 
 
 if __name__ == '__main__':
-    biz_list = list()
-    biz_list.append(124296)
-    biz_list.append(135554)
-    biz_list.append(14300)
-    biz_list.append(22585)
-    biz_list.append(106682)
-    biz_test = 14300
+    biz_list = list(range(100))
+    biz_test = 10
     test_accuracy(biz_list, biz_test)
