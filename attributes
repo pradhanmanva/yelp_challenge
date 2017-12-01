@@ -14,12 +14,19 @@ def get_attributes(temp, attr):
     return attr
 
 
-try:
-    id = 100
-    error_text = ""
-    attr = list()
-    biz_data = pd.read_csv(os.path.join('data', 'biz_csv', 'business_attributes.csv'))
-    biz_data = biz_data.loc[biz_data['business_id'] == id]
+id = list()
+id.append(151)
+id.append(200)
+error_text = ""
+attr = list()
+data = pd.read_csv(os.path.join('data', 'biz_csv', 'business_attributes.csv'))
+# print(id)
+j = 1
+while id:
+    biz_data = data.loc[data['business_id'] == id.pop()]
+    # print(biz_data)
+    # print(j)
+    j += 1
     for i in biz_data.values:
         i[1] = i[1].replace("\"", "")
         i[1] = i[1].replace("\'", "\"")
@@ -27,11 +34,8 @@ try:
         # i[1] = i[1].replace("False", "\"False\"")
         i[1] = i[1].replace("True", "true")
         i[1] = i[1].replace("False", "false")
-        error_text = i[1]
+        # error_text = i[1]
         temp = json.loads(str(i[1]))
         # print(temp)
         print(get_attributes(temp, attr))
         attr = list()
-except Exception as e:
-    print(e.args)
-    # print(error_text)

@@ -12,8 +12,12 @@ def preprocess_data(df):
 def test_accuracy(biz_id_train, biz_id_test):
     data = pd.read_csv(os.path.join('data', 'checkin_csv', 'checkin.csv'))
     train = pd.DataFrame()
+    print(biz_id_train)
+    i = 1
     while biz_id_train:
         temp = data.loc[data['business_id'] == biz_id_train.pop()]
+        print(i)
+        i += 1
         train = train.append(temp)
     # print(train)
 
@@ -21,7 +25,7 @@ def test_accuracy(biz_id_train, biz_id_test):
     y_train = train[train.columns.values[-1]].values
     # print(X_train)
     # print(y_train)
-    mlp_regressor = MLPRegressor(hidden_layer_sizes=(10,5), activation='relu', learning_rate='adaptive').fit(
+    mlp_regressor = MLPRegressor(hidden_layer_sizes=(10, 5), activation='relu', learning_rate='adaptive').fit(
         X_train,
         y_train)
     test = data.loc[data['business_id'] == biz_id_test]
