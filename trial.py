@@ -24,3 +24,6 @@ for train,test in rkfold.split(business_df):
     tem.append(temp)
 #print(tem)
 #print(tem)
+
+
+
