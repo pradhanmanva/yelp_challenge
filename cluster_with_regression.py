@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 import pandas as pd
 from sklearn.model_selection import RepeatedKFold
+from sklearn.metrics import precision_score
 # from sklearn.neural_network import MLPRegressor
 from sklearn.linear_model import LinearRegression
 
@@ -11,11 +12,26 @@ def get_cross_validated_business_data(splits, repeats):
     business_df = pd.read_csv(os.path.join("..", "data", "biz_csv", 'business.csv'))
     training_data = list()
     test_data = list()
-    rkfold = RepeatedKFold(n_splits=splits, n_repeats=repeats, random_state=1)
+    rkfold = RepeatedKFold(n_splits=splits, n_repeats=repeats, random_state=0)
     for train, test in rkfold.split(business_df):
         training_data.append(list(business_df.values[train]))
         test_data.append(list(business_df.values[test]))
     return training_data, test_data
+
+def get_regression_model(biz_id_train):
+    data = pd.read_csv(os.path.join('..', 'data', 'checkin_csv', 'checkin.csv'))
+    train = pd.DataFrame()
+    i = 1
+    while biz_id_train:
+        temp = data.loc[data['business_id'] == biz_id_train.pop()]
+        i += 1
+        train = train.append(temp)
+    if len(train) != 0:
+        X_train = train[train.columns.values[:-1]].values
+        y_train = train[train.columns.values[-1]].values
+        # models[location][category] = MLPRegressor(hidden_layer_sizes=(10, 5), activation='relu', learning_rate='adaptive').fit(X_train, y_train)
+        return LinearRegression().fit(X_train, y_train)
+    return None
 
 def make_regression_models(clustered_business_ids):
     data = pd.read_csv(os.path.join('..','data', 'checkin_csv', 'checkin.csv'))
@@ -47,14 +63,11 @@ def test_model(model, biz_id_test):
             y_test = test[test.columns.values[-1]].values
             predicted_values = model.predict(X_test)
             predicted_values = [ 0 if x < 0 else math.floor(x) for x in predicted_values]
-            # for pred in predicted_values:
-            #     if pred < 0:
-            #         pred = 0
-            #     else:
-            #         pred = math.floor(pred)
-            print(predicted_values)
-            print(y_test)
-            print(model.score(X_test, y_test))
+            # print(predicted_values)
+            # print(y_test)
+            # print(model.score(X_test, y_test))
+            print(precision_score(y_test, predicted_values,average='macro'))
+
         else:
             print("No check-in data available for this business to test...")
     else:
@@ -105,30 +118,40 @@ def cluster_by_position_and_category_cv(n_clusters_pos, n_clusters_cat, cv_split
     # At the end of the above loop, we will have n_clusters of categorical clustering models.
     # The index of the model gives the locational cluster to which it belongs to...
 
-    models = make_regression_models(categorical_cluster_data)
+    # models = make_regression_models(categorical_cluster_data)
+    models = dict()
+    for i in range(n_clusters_pos):
+        models[i] = dict()
+        for j in range(n_clusters_cat):
+            models[i][j] = None
     print("created models for every cluster")
 
     test_iterator = biz_test[cv_index]  # this variable has 20% test data
     lat_lon_list = [[el[1], el[2]] for el in test_iterator]
     predictions_for_test_data = location_model.predict(lat_lon_list)
+    # clusters = set()
+    count = 0
+    # print(len(lat_lon_list))
     for index in range(len(lat_lon_list)):
+        print(count)
+        count += 1
         locational_prediction = predictions_for_test_data[index]
         model = categorical_cluster_models[locational_prediction][0]
         vectorizer = categorical_cluster_models[locational_prediction][1]
         data = test_iterator[index]
         categorical_prediction = model.predict(vectorizer.transform([data[-1]]))[0]
+        print(locational_prediction, categorical_prediction)
+        # clusters.add((locational_prediction,categorical_prediction))
+
+        if (models[locational_prediction][categorical_prediction] == None):
+            models[locational_prediction][categorical_prediction] = get_regression_model(
+                categorical_cluster_data[locational_prediction][categorical_prediction])
+
         # train_bid = categorical_cluster_data[locational_prediction][categorical_prediction]
-        test_bid = data[0]
+        # test_bid = data[0]
 
         test_model(models[locational_prediction][categorical_prediction],data[0])
 
-
-        #             print(categorical_cluster_data[locational_prediction][categorical_prediction],test_iterator[index])
-
-        # print(train_bid, test_bid)
-        # print("=======")
-
-        # call regressor here with the given business data and test data
-
+    # print(len(clusters))
 
 cluster_by_position_and_category_cv(60, 60, 10, 1)
