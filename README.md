@@ -17,50 +17,48 @@ The dataset is divided into three files business.json, user.json and review.json
 ●	The review.json file contains the reviews for business, reference to business, reference to the reviewer and the usefulness of the review. The file contains json objects of 4,736,897 reviews.
 ●	The checkin.json file contains the times over a week when customers have checked-into a business. There are 135,148 check-ins present in the dataset.
 
-Data Distribution:
+**Data Distribution:**
 
-Ratings vs No. of Reviews:
+1. Ratings vs No. of Reviews:
 This graph maps the total number of reviews for each possible rating value. The dataset has ratings from 1 to 5.
- 
 
-Year vs No. of Reviews:
+2. Year vs No. of Reviews:
 This graph maps the number of reviews that were given to businesses against each year.
- 
-Year vs No. of Users joining Yelp:
-The below graph plots the number of users joining Yelp every year
- 
-Day of the week vs No. of Check-ins:
-The following four graphs show the check-ins of four businesses over a week. 
 
-Planned Techniques:
+3. Year vs No. of Users joining Yelp:
+The below graph plots the number of users joining Yelp every year
+
+4. Day of the week vs No. of Check-ins:
+The following four graphs show the check-ins of four businesses over a week.
+
+**Planned Techniques:**
 
 The plan to achieve our aim is as follows:
-1.	Extract the information from the review.json about the features of a business like opening hours, closing hours, dinner, lunch, cafe and other important information.
-2.	Mine the details of the checkin.json and find out the rush hours and non-rush hours. 
+1. Extract the information from the business.json about the features of a business like opening hours, closing hours, dinner, lunch, cafe and other important information using the attribute "attribute"
+2.	Mine the details of the checkin.json and find out the rush hours and non-rush hours.
 3.	Map the business to their check-in details and prepare the training, testing and validation data.
 4.	Create a model using the review, checkin and business data.
-5.	Predict the busyness of a business at a given time or day, irrespective of the category. 
+5.	Predict the busyness of a business at a given time or day for a given location.
 
-We intend to try out different techniques, in addition to sentiment analysis, like 
+We intend to try out different techniques, in addition to sentiment analysis, like
 
-1.	Artificial Neural Networks
-2.	Naive Bayes Classifier
-3.	Logistic Regression
+1.	Artificial Neural Networks Regressor
+2.	Bagging Regressor
+3.	Stochastic Gradient Descent
 4.	Ensemble Methods
-5.	Boosting
+5.	AdaBoosting
 
-Experimental methodology (how you plan to pre-process, create training, validation, and test datasets, and other such details)
- 
-In the pre-processing step, we intend to combine the three json files into a single csv file analogous to joining three tables in a relational database with only the desired attributes. Textual categorical features, if any, will be converted to numerical features. Records with null values for any of its features, if any, will be omitted. All features will be normalized to some equivalent range. 
- Lengthy reviews have a lot of unnecessary words and characters like ‘\n’ and stop words. Such words and special characters will be removed, without loss of information, for the sentiment analyser to perform optimally. 
+**Experimental methodology (how you plan to pre-process, create training, validation, and test datasets, and other such details)**
+
+In the pre-processing step, we intend to combine the three json files into a single csv file analogous to joining three tables in a relational database with only the desired attributes. Textual categorical features, if any, will be converted to numerical features. Records with null values for any of its features, if any, will be omitted. All features will be normalized to some equivalent range.
+ Lengthy reviews have a lot of unnecessary words and characters like ‘\n’ and stop words. Such words and special characters will be removed, without loss of information, for the sentiment analyser to perform optimally.
 On the processed data, we plan to try out the following methods to create training and validation and test data sets and choose the best performing one -
 
 1.	Since the dataset is large enough containing nearly 1M reviews, the hold-out method can provide a simple and fast way to generate data.
 2.	K-fold cross-validation with large enough K. Leave-one-out cross validation can be very time consuming to perform on such huge dataset.
-3.	Bootstrapping resampling. 
- 
+3.	Bootstrapping resampling.
 
-Coding language / technique to be used 
- 
+
+**Coding language / technique to be used**
+
 The language used to code the whole project is Python. We intend to use libraries like TensorFlow or Keras, NLTK, scikit-learn, and data processing libraries like Pandas, Numpy and Matplotlib. For sentiment analysis, we have planned to use senti_classifier library. We intend to use MongoDB as the data is in json format.
-

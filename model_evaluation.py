@@ -3,6 +3,7 @@ import random
 import warnings
 
 import math
+import numpy as np
 import pandas as pd
 from sklearn.ensemble import GradientBoostingRegressor, BaggingRegressor
 from sklearn.linear_model import SGDRegressor
@@ -34,9 +35,10 @@ def test_accuracy(biz_id_train, biz_id_test):
         predicted_values = regr.predict(X_test)
         print(predicted_values)
         print(y_test)
+        accuracy = []
         for (x, x_) in zip(y_test, predicted_values):
-            print(math.fabs(x - x_) / 100)
-        print(regr.score(X_test, y_test))
+            accuracy.append(float(1 - (math.fabs(x - x_) * 100 / x)))
+        print(np.mean(accuracy), regr.score(X_test, y_test))
 
 
 def get_regressors():
@@ -55,7 +57,7 @@ def get_regressors():
 if __name__ == '__main__':
     data = pd.read_csv(os.path.join('data', 'checkin_csv', 'checkin.csv'))
     data = data.sort_values(by='business_id')
-    train_id = random.sample(set(data['business_id'].values), 1000)
+    train_id = random.sample(set(data['business_id'].values), 10000)
     test_id = random.sample(train_id, 1)
     test_ID = test_id.pop()
     test_accuracy(train_id, test_ID)
