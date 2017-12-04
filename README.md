@@ -2,7 +2,20 @@
 
 This is an experimental project to predict the rush hours for a specific type of business using the Yelp dataset.
 
-***CS 6375.004 – Machine Learning***
+Libraries Used: numpy, pandas, scikit-learn, matplotlib, seaborn, json, os, math
+
+Dataset Used: Poker Hand – https://www.yelp.com/dataset/download
+
+**How to run the code**
+1. Keep the whole folder intact.
+2. Install the above packages using pip. 
+2.	For windows users: Open Command Line  type "python -m pip install  <package_name> " 
+3.	For Linux users: Open Terminal  type "pip install <package_name>" 
+4.	Keep the downloaded data (json files) in the data folder.
+5. Run the notebooks and that should show you graphs and results on its own.
+6. Run the model_name.py file to view performance of various model with our data.
+
+**CS 6375.004 – Machine Learning**
  
 **Project – Predicting the busyness of a business based on reviews and check-ins**
  
