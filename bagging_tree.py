@@ -81,7 +81,8 @@ def test_model(model, biz_id_test):
             y_test = test[test.columns.values[-1]].values
             predicted_values = model.predict(X_test)
             predicted_values = [0 if x < 0 else math.floor(x) for x in predicted_values]
-            # print(predicted_values)
+            print(X_test)
+            print(predicted_values)
             # print(y_test)
             # print(model.score(X_test, y_test))
             print(precision_score(y_test, predicted_values, average='macro'))
