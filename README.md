@@ -4,7 +4,7 @@ This is an experimental project to predict the rush hours for a specific type of
 
 Libraries Used: numpy, pandas, scikit-learn, matplotlib, seaborn, json, os, math
 
-Dataset Used: Poker Hand – https://www.yelp.com/dataset/download
+Dataset Used: Yelp Dataset – https://www.yelp.com/dataset/download
 
 **How to run the code**
 1. Keep the whole folder intact.
